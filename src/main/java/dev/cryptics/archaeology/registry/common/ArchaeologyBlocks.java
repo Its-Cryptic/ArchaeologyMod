@@ -16,14 +16,12 @@ public class ArchaeologyBlocks {
 
     public static final DeferredBlock<StampBlock> STAMP_BLOCK = BLOCKS.register("angler_stamp", () ->
             new StampBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.PLANT)
-                    .replaceable()
+                    .mapColor(MapColor.CLAY)
                     .noCollission()
-                    .randomTicks()
                     .strength(0.2F)
-                    .sound(SoundType.VINE)
-                    .ignitedByLava()
+                    .sound(SoundType.SAND)
                     .pushReaction(PushReaction.DESTROY)
+                    .noLootTable()
             )
     );
 

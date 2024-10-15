@@ -56,29 +56,30 @@ public class StampBlockEntityRenderer implements BlockEntityRenderer<StampBlockE
     @Override
     public void render(StampBlockEntity stampBlockEntity, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight, int packedOverlay) {
         DyeColor color = stampBlockEntity.getColor();
+        boolean luminous = stampBlockEntity.isLuminous();
         Direction direction = stampBlockEntity.getBlockState().getValue(StampBlock.FACING);
 
         ResourceLocation texture = ArchaeologyMod.id("textures/stamps/heart.png");
-        renderStamp(direction, color, texture, poseStack, multiBufferSource);
+        renderStamp(direction, color, texture, poseStack, multiBufferSource, luminous ? LightTexture.FULL_BRIGHT : packedLight);
     }
 
 
 
-    private static void renderStamp(Direction direction, DyeColor pColor, ResourceLocation pTexture, PoseStack poseStack, MultiBufferSource multiBufferSource) {
+    private static void renderStamp(Direction direction, DyeColor pColor, ResourceLocation pTexture, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
         Color color = Color.of(pColor);
         RenderTypeToken token = RenderTypeToken.createCachedToken(pTexture);
         RenderType renderType = ArchaeologyRenderTypes.STAMP.applyAndCache(token);
         VertexConsumer vertexConsumer = multiBufferSource.getBuffer(renderType);
 
-        float offset = 1f/64f;
+        float offset = 1f/128f;
         poseStack.pushPose();
         directionConsumerMap.get(direction).accept(poseStack);
         poseStack.translate(0.0f, 0.0f, offset);
 
-        posColorTexLightMap(vertexConsumer, poseStack, 0, 0, 0, 0.0f, 1.0f, color, LightTexture.FULL_BRIGHT);
-        posColorTexLightMap(vertexConsumer, poseStack, 1, 0, 0, 1.0f, 1.0f, color, LightTexture.FULL_BRIGHT);
-        posColorTexLightMap(vertexConsumer, poseStack, 1, 1, 0, 1.0f, 0.0f, color, LightTexture.FULL_BRIGHT);
-        posColorTexLightMap(vertexConsumer, poseStack, 0, 1, 0, 0.0f, 0.0f, color, LightTexture.FULL_BRIGHT);
+        posColorTexLightMap(vertexConsumer, poseStack, 0, 0, 0, 0.0f, 1.0f, color, packedLight);
+        posColorTexLightMap(vertexConsumer, poseStack, 1, 0, 0, 1.0f, 1.0f, color, packedLight);
+        posColorTexLightMap(vertexConsumer, poseStack, 1, 1, 0, 1.0f, 0.0f, color, packedLight);
+        posColorTexLightMap(vertexConsumer, poseStack, 0, 1, 0, 0.0f, 0.0f, color, packedLight);
 
         poseStack.popPose();
     }

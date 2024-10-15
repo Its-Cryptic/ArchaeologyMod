@@ -7,6 +7,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeItem;
+import net.minecraft.world.item.GlowInkSacItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -27,7 +28,6 @@ import org.jetbrains.annotations.Nullable;
 public class StampBlock extends Block implements EntityBlock {
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.values());
 
-    // Define thin shapes for each face
     protected static final VoxelShape SHAPE_UP = Block.box(0.0D, 15.0D, 0.0D, 16.0D, 16.0D, 16.0D);
     protected static final VoxelShape SHAPE_DOWN = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
     protected static final VoxelShape SHAPE_NORTH = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 1.0D);
@@ -46,14 +46,22 @@ public class StampBlock extends Block implements EntityBlock {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof StampBlockEntity stampBlockEntity) {
                 stampBlockEntity.setColor(dyeItem.getDyeColor());
-                //stack.setCount(stack.getCount() - 1); // TODO: Uncomment this line
+                if (!player.isCreative()) stack.setCount(stack.getCount() - 1);
+                return ItemInteractionResult.SUCCESS;
+            }
+        }
+        if (stack.getItem() instanceof GlowInkSacItem) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof StampBlockEntity stampBlockEntity) {
+                if (stampBlockEntity.isLuminous()) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                stampBlockEntity.setLuminous(true);
+                if (!player.isCreative()) stack.setCount(stack.getCount() - 1);
                 return ItemInteractionResult.SUCCESS;
             }
         }
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }
 
-    // Return the correct shape based on the facing direction
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return switch (state.getValue(FACING)) {
@@ -73,7 +81,6 @@ public class StampBlock extends Block implements EntityBlock {
         return level.getBlockState(attachedPos).isFaceSturdy(level, attachedPos, facing);
     }
 
-    // Determine the block state when placed
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
@@ -82,7 +89,6 @@ public class StampBlock extends Block implements EntityBlock {
         return state.canSurvive(context.getLevel(), context.getClickedPos()) ? state : null;
     }
 
-    // Define the block state properties
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING);

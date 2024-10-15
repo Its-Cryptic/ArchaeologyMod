@@ -36,12 +36,22 @@ vec4 remap4(vec4 value, vec2 inputRange, vec2 outputRange) {
     );
 }
 
+float distanceFromCenter(vec2 coord) {
+    return length(coord - vec2(0.5));
+}
+
+vec2 pixelize(vec2 coord, float pixelSize) {
+    return floor(coord / pixelSize) * pixelSize;
+}
+
 void main() {
     vec4 texture = texture(Sampler0, texCoord0);
     vec4 remapped = remap4(texture, vec2(0.184, 0.259), vec2(0.7, 1.0));
 
     vec4 color = remapped * vertexColor;
     fragColor = color * ColorModulator;
+    float distanceFromCenter = distanceFromCenter(pixelize(texCoord0, 1.0/16.0));
+    fragColor.rgb *= vec3(1.0-distanceFromCenter);
 
     if (fragColor.a < 0.5) discard;
 }

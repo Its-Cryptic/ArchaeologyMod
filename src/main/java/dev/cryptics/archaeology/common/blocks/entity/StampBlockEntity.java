@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class StampBlockEntity extends BlockEntity {
     private DyeColor color = DyeColor.WHITE;
+    private boolean luminous;
 
     public StampBlockEntity(BlockPos pos, BlockState state) {
         super(ArchaeologyBlockEntitites.STAMP_BLOCK_ENTITY.get(), pos, state);
@@ -20,12 +21,14 @@ public class StampBlockEntity extends BlockEntity {
     public void loadAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
         super.loadAdditional(tag, registries);
         this.color = DyeColor.byId(tag.getInt("color"));
+        this.luminous = tag.getBoolean("luminous");
     }
 
     @Override
     public void saveAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
         super.saveAdditional(tag, registries);
         tag.putInt("color", this.color.getId());
+        tag.putBoolean("luminous", this.luminous);
     }
 
     @Override
@@ -50,11 +53,20 @@ public class StampBlockEntity extends BlockEntity {
         this.markUpdated();
     }
 
+    public void setLuminous(boolean luminous) {
+        this.luminous = luminous;
+        this.markUpdated();
+    }
+
     public DyeColor getColor() {
         if (this.color == null) {
             return DyeColor.WHITE;
         }
         return this.color;
+    }
+
+    public boolean isLuminous() {
+        return this.luminous;
     }
 
 }
