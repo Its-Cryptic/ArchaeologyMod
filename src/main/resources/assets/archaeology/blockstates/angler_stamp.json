@@ -1,0 +1,51 @@
+{
+    "multipart": [
+        {
+            "when": { "facing": "north" },
+            "apply": {
+                "model": "archaeology:block/angler_stamp",
+                "uvlock": true
+            }
+        },
+        {
+            "when": { "facing": "east" },
+            "apply": {
+                "model": "archaeology:block/angler_stamp",
+                "y": 90,
+                "uvlock": true
+            }
+        },
+        {
+            "when": { "facing": "south" },
+            "apply": {
+                "model": "archaeology:block/angler_stamp",
+                "y": 180,
+                "uvlock": true
+            }
+        },
+        {
+            "when": { "facing": "west" },
+            "apply": {
+                "model": "archaeology:block/angler_stamp",
+                "y": 270,
+                "uvlock": true
+            }
+        },
+        {
+            "when": { "facing": "up" },
+            "apply": {
+                "model": "archaeology:block/angler_stamp",
+                "x": -90,
+                "uvlock": true
+            }
+        },
+        {
+            "when": { "facing": "down" },
+            "apply": {
+                "model": "archaeology:block/angler_stamp",
+                "x": 90,
+                "uvlock": true
+            }
+        }
+    ]
+}

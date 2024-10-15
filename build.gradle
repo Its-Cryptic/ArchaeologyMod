@@ -18,6 +18,19 @@ group = mod_group_id
 
 repositories {
     mavenLocal()
+    repositories {
+        maven {
+            url "https://cursemaven.com"
+        }
+    }
+    maven {
+        name = "OctoStudios"
+        url = uri("https://maven.octo-studios.com/releases")
+    }
+    maven {
+        name = "BlameJared maven"
+        url = uri("https://maven.blamejared.com/")
+    }
 }
 
 base {
@@ -129,6 +142,14 @@ dependencies {
 
     // Example project dependency using a sister or child project:
     // implementation project(":myproject")
+
+    implementation "curse.maven:ftb-library-forge-404465:5754910"
+    implementation "curse.maven:architectury-api-419699:5786327"
+
+    compileOnly "top.theillusivec4.curios:curios-neoforge:9.0.9+1.21:api"
+    runtimeOnly "top.theillusivec4.curios:curios-neoforge:9.0.9+1.21"
+
+    implementation "team.lodestar.lodestone:lodestone:1.21.1-1.7.0.71"
 
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html

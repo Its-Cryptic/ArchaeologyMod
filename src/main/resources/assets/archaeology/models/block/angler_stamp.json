@@ -1,0 +1,11 @@
+{
+    "ambientocclusion": false,
+    "render_type": "cutout",
+    "textures": {
+        "particle": "block/vine",
+        "angler_stamp": "block/vine"
+    },
+    "elements": [
+
+    ]
+}
