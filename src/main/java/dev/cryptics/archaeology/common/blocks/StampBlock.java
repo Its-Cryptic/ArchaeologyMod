@@ -3,6 +3,9 @@ package dev.cryptics.archaeology.common.blocks;
 import dev.cryptics.archaeology.common.blocks.entity.StampBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -19,6 +22,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -37,33 +41,42 @@ public class StampBlock extends Block implements EntityBlock {
 
     public StampBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
+        this.registerDefaultState(this.stateDefinition.any()
+                .setValue(FACING, Direction.NORTH)
+        );
     }
 
+    @NotNull
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    protected ItemInteractionResult useItemOn(ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
         if (stack.getItem() instanceof DyeItem dyeItem) {
-            BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof StampBlockEntity stampBlockEntity) {
-                stampBlockEntity.setColor(dyeItem.getDyeColor());
+            if (level.getBlockEntity(pos) instanceof StampBlockEntity stamp) {
+                if (stamp.getColor().equals(dyeItem.getDyeColor())) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                stamp.setColor(dyeItem.getDyeColor());
                 if (!player.isCreative()) stack.setCount(stack.getCount() - 1);
+                player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
+                level.gameEvent(GameEvent.BLOCK_CHANGE, stamp.getBlockPos(), GameEvent.Context.of(player, stamp.getBlockState()));
+                level.playSound(null, stamp.getBlockPos(), SoundEvents.DYE_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
                 return ItemInteractionResult.SUCCESS;
             }
         }
         if (stack.getItem() instanceof GlowInkSacItem) {
-            BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof StampBlockEntity stampBlockEntity) {
-                if (stampBlockEntity.isLuminous()) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-                stampBlockEntity.setLuminous(true);
+            if (level.getBlockEntity(pos) instanceof StampBlockEntity stamp) {
+                if (stamp.isLuminous()) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                stamp.setLuminous(true);
                 if (!player.isCreative()) stack.setCount(stack.getCount() - 1);
+                player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
+                level.gameEvent(GameEvent.BLOCK_CHANGE, stamp.getBlockPos(), GameEvent.Context.of(player, stamp.getBlockState()));
+                level.playSound(null, stamp.getBlockPos(), SoundEvents.GLOW_INK_SAC_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
                 return ItemInteractionResult.SUCCESS;
             }
         }
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }
 
+    @NotNull
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
         return switch (state.getValue(FACING)) {
             case UP -> SHAPE_UP;
             case DOWN -> SHAPE_DOWN;
@@ -98,5 +111,10 @@ public class StampBlock extends Block implements EntityBlock {
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
         return new StampBlockEntity(blockPos, blockState);
+    }
+
+    @Override
+    public boolean isPossibleToRespawnInThis(@NotNull BlockState state) {
+        return true;
     }
 }
