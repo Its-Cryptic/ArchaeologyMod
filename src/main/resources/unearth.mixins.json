@@ -1,0 +1,19 @@
+{
+    "required": true,
+    "package": "dev.cryptics.unearth.mixin.mixins",
+    "compatibilityLevel": "JAVA_17",
+    "refmap": "unearth.refmap.json",
+    "mixins": [
+        "common.BlocksMixin",
+        "common.DecoratedPotBlockEntityMixin",
+        "common.DecoratedPotBlockMixin",
+        "common.TorchFlowerCropBlockMixin"
+    ],
+    "client": [
+        "client.DecoratedPotRendererMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    },
+    "minVersion": "0.8.5"
+}

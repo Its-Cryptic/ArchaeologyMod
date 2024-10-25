@@ -1,0 +1,51 @@
+{
+    "multipart": [
+        {
+            "when": { "facing": "north" },
+            "apply": {
+                "model": "unearth:block/angler_stamp",
+                "uvlock": true
+            }
+        },
+        {
+            "when": { "facing": "east" },
+            "apply": {
+                "model": "unearth:block/angler_stamp",
+                "y": 90,
+                "uvlock": true
+            }
+        },
+        {
+            "when": { "facing": "south" },
+            "apply": {
+                "model": "unearth:block/angler_stamp",
+                "y": 180,
+                "uvlock": true
+            }
+        },
+        {
+            "when": { "facing": "west" },
+            "apply": {
+                "model": "unearth:block/angler_stamp",
+                "y": 270,
+                "uvlock": true
+            }
+        },
+        {
+            "when": { "facing": "up" },
+            "apply": {
+                "model": "unearth:block/angler_stamp",
+                "x": -90,
+                "uvlock": true
+            }
+        },
+        {
+            "when": { "facing": "down" },
+            "apply": {
+                "model": "unearth:block/angler_stamp",
+                "x": 90,
+                "uvlock": true
+            }
+        }
+    ]
+}
