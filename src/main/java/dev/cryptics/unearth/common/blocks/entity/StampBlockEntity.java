@@ -3,14 +3,19 @@ package dev.cryptics.unearth.common.blocks.entity;
 import dev.cryptics.unearth.registry.common.UnearthBlockEntitites;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 public class StampBlockEntity extends BlockEntity {
     private DyeColor color = DyeColor.WHITE;
+    private Item sherdItem = Items.ANGLER_POTTERY_SHERD;
     private boolean luminous;
 
     public StampBlockEntity(BlockPos pos, BlockState state) {
@@ -22,6 +27,7 @@ public class StampBlockEntity extends BlockEntity {
         super.loadAdditional(tag, registries);
         this.color = DyeColor.byId(tag.getInt("color"));
         this.luminous = tag.getBoolean("luminous");
+        this.sherdItem = BuiltInRegistries.ITEM.get(ResourceLocation.parse(tag.getString("sherd_item")));
     }
 
     @Override
@@ -29,6 +35,7 @@ public class StampBlockEntity extends BlockEntity {
         super.saveAdditional(tag, registries);
         tag.putInt("color", this.color.getId());
         tag.putBoolean("luminous", this.luminous);
+        tag.putString("sherd_item", BuiltInRegistries.ITEM.getKey(this.sherdItem).toString());
     }
 
     @NotNull
@@ -70,6 +77,15 @@ public class StampBlockEntity extends BlockEntity {
 
     public boolean isLuminous() {
         return this.luminous;
+    }
+
+    public void setSherdItem(Item sherdItem) {
+        this.sherdItem = sherdItem;
+        this.markUpdated();
+    }
+
+    public Item getSherdItem() {
+        return this.sherdItem;
     }
 
 }

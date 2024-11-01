@@ -60,8 +60,9 @@ public class StampBlockEntityRenderer implements BlockEntityRenderer<StampBlockE
         DyeColor color = stampBlockEntity.getColor();
         boolean luminous = stampBlockEntity.isLuminous();
         Direction direction = stampBlockEntity.getBlockState().getValue(StampBlock.FACING);
+        Item sherdItem = stampBlockEntity.getSherdItem();
 
-        ResourceLocation texture = Unearth.id("textures/stamps/heart.png");
+        ResourceLocation texture = CustomDecoratedPotRenderer.getTexture(sherdItem);
         //Unearth.LOGGER.info(getTexture(Items.ANGLER_POTTERY_SHERD).toString());
         renderStamp(direction, color, texture, poseStack, multiBufferSource, luminous ? LightTexture.FULL_BRIGHT : packedLight);
     }

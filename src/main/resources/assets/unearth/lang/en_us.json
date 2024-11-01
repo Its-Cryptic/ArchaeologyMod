@@ -1,5 +1,6 @@
 {
-  "itemGroup.examplemod": "Example Mod Tab",
-  "block.examplemod.example_block": "Example Block",
-  "item.examplemod.example_item": "Example Item"
+  "itemGroup.unearth": "Unearth Items",
+  "item.unearth.stamp_kit": "Stamp Kit",
+  "item.unearth.conversation_range_music_disc": "Music Disc",
+  "item.unearth.conversation_range_music_disc.desc": "Bandit - Conversation Range"
 }

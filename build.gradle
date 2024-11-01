@@ -149,7 +149,8 @@ dependencies {
     compileOnly "top.theillusivec4.curios:curios-neoforge:9.0.9+1.21:api"
     runtimeOnly "top.theillusivec4.curios:curios-neoforge:9.0.9+1.21"
 
-    implementation "team.lodestar.lodestone:lodestone:1.21.1-1.7.0.82"
+    //implementation "team.lodestar.lodestone:lodestone:1.21.1-1.7.0.82"
+    implementation "team.lodestar.lodestone:lodestone:1.21.1-1.7.0.71"
 
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html

@@ -11,11 +11,11 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 
 public class StampKitScreen extends AbstractContainerScreen<StampKitMenu> {
-    private static final ResourceLocation CONTAINER_TEXTURE = Unearth.id("textures/gui/container/backpack.png");
+    private static final ResourceLocation CONTAINER_TEXTURE = Unearth.id("textures/gui/container/stamp_kit_container.png");
 
     public StampKitScreen(StampKitMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
-        this.imageHeight++;
+        this.imageHeight = 222;
     }
 
     /**

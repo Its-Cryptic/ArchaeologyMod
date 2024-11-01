@@ -21,9 +21,9 @@ public class UnearthPostProcessors {
 
     public static void init() {
         POST_PROCESSORS.forEach(postProcessor -> postProcessor.setActive(false));
-        POST_PROCESSORS.forEach(PostProcessHandler::addInstance);
+        //POST_PROCESSORS.forEach(PostProcessHandler::addInstance);
 
         int totalPostProcessors = POST_PROCESSORS.size();
-        Unearth.LOGGER.info("Registered " + totalPostProcessors + " post processors");
+        //Unearth.LOGGER.info("Registered " + totalPostProcessors + " post processors");
     }
 }

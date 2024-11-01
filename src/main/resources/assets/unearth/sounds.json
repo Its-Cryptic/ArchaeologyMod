@@ -1,0 +1,10 @@
+{
+    "conversation_range": {
+        "sounds": [
+            {
+                "name": "unearth:conversation_range",
+                "stream": true
+            }
+        ]
+    }
+}

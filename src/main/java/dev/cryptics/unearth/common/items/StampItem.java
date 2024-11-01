@@ -1,6 +1,8 @@
 package dev.cryptics.unearth.common.items;
 
 import com.google.common.collect.ImmutableMap;
+import dev.cryptics.unearth.Unearth;
+import dev.cryptics.unearth.client.render.blockentity.CustomDecoratedPotRenderer;
 import dev.cryptics.unearth.client.screen.StampKitMenu;
 import dev.cryptics.unearth.common.container.ItemInventory;
 import dev.cryptics.unearth.common.blocks.StampBlock;
@@ -13,6 +15,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.*;
@@ -37,23 +40,8 @@ import java.util.Objects;
 import static net.minecraft.world.item.Items.*;
 
 public class StampItem extends Item {
-    private static final List<Item> ALL_SHERDS = List.of(ANGLER_POTTERY_SHERD, ARCHER_POTTERY_SHERD, ARMS_UP_POTTERY_SHERD, BLADE_POTTERY_SHERD, BREWER_POTTERY_SHERD, BURN_POTTERY_SHERD);
-    private static final Map<Item, Block> SHERD_STAMP_MAP = ImmutableMap.of(
-            ANGLER_POTTERY_SHERD, Blocks.STONE,
-            ARCHER_POTTERY_SHERD, Blocks.DIRT,
-            ARMS_UP_POTTERY_SHERD, Blocks.GRASS_BLOCK,
-            BLADE_POTTERY_SHERD, Blocks.COBBLESTONE,
-            BREWER_POTTERY_SHERD, Blocks.OAK_PLANKS,
-            BURN_POTTERY_SHERD, Blocks.SAND
-    );
-
-    private static final CompoundTag defaultTag = new CompoundTag() {{
-        Item entry = SHERD_STAMP_MAP.keySet().stream().findFirst().orElse(ANGLER_POTTERY_SHERD);
-        putString("current_stamp", entry.getName(entry.getDefaultInstance()).getString());
-    }};
     private static final Properties properties = new Properties()
             .rarity(Rarity.UNCOMMON)
-            .component(DataComponents.CUSTOM_DATA, CustomData.of(defaultTag))
             .component(DataComponents.CONTAINER, ItemContainerContents.EMPTY)
             .component(DataComponents.CUSTOM_MODEL_DATA, CustomModelData.DEFAULT)
             .stacksTo(1);
@@ -62,8 +50,25 @@ public class StampItem extends Item {
         super(properties);
     }
 
+    /**
+     * Ignore how bad this code is, I was in a rush
+     * @param context
+     * @return
+     */
     @Override
     public InteractionResult useOn(UseOnContext context) {
+        ItemContainerContents contents = context.getItemInHand().get(DataComponents.CONTAINER);
+        if (contents == null) {
+            return InteractionResult.FAIL;
+        }
+
+        ItemStack sherdItem = contents.getStackInSlot(23);
+        if (sherdItem.isEmpty()) {
+            return InteractionResult.FAIL;
+        }
+        if (!ALL_SHERDS.contains(sherdItem.getItem())) {
+            return InteractionResult.FAIL;
+        }
         Level level = context.getLevel();
         Block block = level.getBlockState(context.getClickedPos()).getBlock();
         Direction direction = context.getClickedFace();
@@ -79,11 +84,12 @@ public class StampItem extends Item {
             }
             boolean isSolid = block.defaultBlockState().isSolidRender(level, context.getClickedPos());
             if (isSolid) {
-                Block sherdBlock = SHERD_STAMP_MAP.getOrDefault(stack.getItem(), UnearthBlocks.STAMP_BLOCK.get());
+                Block sherdBlock = UnearthBlocks.STAMP_BLOCK.get();
                 BlockPos pos = context.getClickedPos().relative(direction);
                 level.setBlock(pos, sherdBlock.defaultBlockState().setValue(StampBlock.FACING, direction.getOpposite()), 3);
                 if (level.getBlockEntity(pos) instanceof StampBlockEntity blockEntity) {
                     blockEntity.setColor(dyeItem.getDyeColor());
+                    blockEntity.setSherdItem(sherdItem.getItem());
                     level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(context.getPlayer(), blockEntity.getBlockState()));
                 }
             }
@@ -140,11 +146,30 @@ public class StampItem extends Item {
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }
 
-//    private MenuProvider getMenuProvider(ItemStack stack) {
-//       return new SimpleMenuProvider((id, inventory, player) -> {
-//           SimpleContainer container = new SimpleContainer(1);
-//           container.
-//           return new StampScreenHandler(id, inventory, stack);
-//       }, stack.getHoverName());
-//    }
+    private static final List<Item> ALL_SHERDS = List.of(
+            ANGLER_POTTERY_SHERD,
+            ARCHER_POTTERY_SHERD,
+            ARMS_UP_POTTERY_SHERD,
+            BLADE_POTTERY_SHERD,
+            BREWER_POTTERY_SHERD,
+            BURN_POTTERY_SHERD,
+            DANGER_POTTERY_SHERD,
+            EXPLORER_POTTERY_SHERD,
+            FLOW_POTTERY_SHERD,
+            FRIEND_POTTERY_SHERD,
+            GUSTER_POTTERY_SHERD,
+            HEART_POTTERY_SHERD,
+            HEARTBREAK_POTTERY_SHERD,
+            HOWL_POTTERY_SHERD,
+            MINER_POTTERY_SHERD,
+            MOURNER_POTTERY_SHERD,
+            PLENTY_POTTERY_SHERD,
+            PRIZE_POTTERY_SHERD,
+            SCRAPE_POTTERY_SHERD,
+            SHEAF_POTTERY_SHERD,
+            SHELTER_POTTERY_SHERD,
+            SKULL_POTTERY_SHERD,
+            SNORT_POTTERY_SHERD
+    );
+
 }
