@@ -1,5 +1,6 @@
 package dev.cryptics.unearth.common.container;
 
+import dev.cryptics.unearth.common.items.StampItem;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -11,6 +12,6 @@ public class ItemInventorySlot extends Slot {
 
     @Override
     public boolean mayPlace(ItemStack stack) {
-        return stack.getItem().canFitInsideContainerItems();
+        return stack.getItem().canFitInsideContainerItems() && StampItem.ALL_SHERDS.contains(stack.getItem());
     }
 }

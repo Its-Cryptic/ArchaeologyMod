@@ -146,7 +146,7 @@ public class StampItem extends Item {
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }
 
-    private static final List<Item> ALL_SHERDS = List.of(
+    public static final List<Item> ALL_SHERDS = List.of(
             ANGLER_POTTERY_SHERD,
             ARCHER_POTTERY_SHERD,
             ARMS_UP_POTTERY_SHERD,
