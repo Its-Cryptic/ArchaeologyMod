@@ -31,6 +31,15 @@ repositories {
         name = "BlameJared maven"
         url = uri("https://maven.blamejared.com/")
     }
+
+    maven {
+        url = "https://api.modrinth.com/maven"
+    }
+
+    maven {
+        name = "Kotlin for Forge"
+        setUrl("https://thedarkcolour.github.io/KotlinForForge/")
+    }
 }
 
 base {
@@ -151,6 +160,10 @@ dependencies {
 
     //implementation "team.lodestar.lodestone:lodestone:1.21.1-1.7.0.82"
     implementation "team.lodestar.lodestone:lodestone:1.21.1-1.7.0.71"
+
+    implementation "maven.modrinth:past-el-palettes:1.0.1"
+    implementation "thedarkcolour:kotlinforforge-neoforge:5.5.0"
+
 
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html

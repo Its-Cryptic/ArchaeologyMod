@@ -28,14 +28,15 @@ public class CustomDecoratedPotRenderer {
     public static void renderStamp(Direction direction, IDecoratedPotBlockEntity blockEntity, Optional<Item> item, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
         if (item.isEmpty()) return;
         if (item.get().equals(Items.BRICK)) return;
-        DyeColor color = blockEntity.getColorsMap().get(direction);
+        //DyeColor color = blockEntity.getColorsMap().get(direction);
+        int color = blockEntity.getColorsMap().getOrDefault(direction, 0);
         packedLight = blockEntity.getLuminousMap().getOrDefault(direction, false) ? LightTexture.FULL_BRIGHT : packedLight;
-        if (color == null) return;
+        if (color == 0) return;
         renderStamp(direction, color, item, poseStack, multiBufferSource, packedLight);
     }
 
-    public static void renderStamp(Direction direction, DyeColor pColor, Optional<Item> item, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
-        Color color = Color.of(pColor);
+    public static void renderStamp(Direction direction, int packedColor, Optional<Item> item, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
+        Color color = Color.of(packedColor);
         ResourceLocation pTexture = item.map(CustomDecoratedPotRenderer::getTexture).orElse(null);
         RenderTypeToken token = RenderTypeToken.createCachedToken(pTexture);
         RenderType renderType = UnearthRenderTypes.STAMP.applyAndCache(token);

@@ -30,7 +30,7 @@ import java.util.Map;
 @Mixin(DecoratedPotBlockEntity.class)
 public abstract class DecoratedPotBlockEntityMixin extends BlockEntity implements IDecoratedPotBlockEntity {
     @Unique
-    private Map<Direction, DyeColor> dyeColorMap = new HashMap<>();
+    private Map<Direction, Integer> dyeColorMap = new HashMap<>();
     @Unique
     private Map<Direction, Boolean> luminousMap = new HashMap<>();
     @Unique
@@ -44,10 +44,10 @@ public abstract class DecoratedPotBlockEntityMixin extends BlockEntity implement
     public CompoundTag saveColorLuminousData() {
         CompoundTag tag = new CompoundTag();
         for (Direction direction : dyeColorMap.keySet()) {
-            DyeColor color = this.dyeColorMap.get(direction);
-            if (color != null) {
+            int color = this.dyeColorMap.get(direction);
+            if (color != 0) {
                 CompoundTag compoundTag = new CompoundTag();
-                compoundTag.putInt("color", this.getId(color));
+                compoundTag.putInt("color", color);
                 compoundTag.putBoolean("luminous", this.luminousMap.getOrDefault(direction, false));
                 tag.put(direction.getSerializedName(), compoundTag);
             }
@@ -60,7 +60,7 @@ public abstract class DecoratedPotBlockEntityMixin extends BlockEntity implement
         for (Direction direction : Direction.values()) {
             if (tag.contains(direction.getSerializedName())) {
                 CompoundTag compoundTag = tag.getCompound(direction.getSerializedName());
-                this.dyeColorMap.put(direction, this.getDyeColor(compoundTag.getInt("color")));
+                this.dyeColorMap.put(direction, compoundTag.getInt("color"));
                 this.luminousMap.put(direction, compoundTag.getBoolean("luminous"));
             }
         }
@@ -111,20 +111,8 @@ public abstract class DecoratedPotBlockEntityMixin extends BlockEntity implement
 //        this.saveAdditional(tag, registries);
 //    }
 
-
-    @Unique
-    @Nullable
-    private DyeColor getDyeColor(int id) {
-        return id == -1 ? null : DyeColor.byId(id);
-    }
-
-
-    private int getId(DyeColor color) {
-        return color == null ? -1 : color.getId();
-    }
-
     @Override
-    public void setColor(Direction direction, DyeColor color) {
+    public void setColor(Direction direction, int color) {
         this.dyeColorMap.put(direction.getOpposite(), color);
         this.markUpdated();
     }
@@ -136,7 +124,7 @@ public abstract class DecoratedPotBlockEntityMixin extends BlockEntity implement
     }
 
     @Override
-    public Map<Direction, DyeColor> getColorsMap() {
+    public Map<Direction, Integer> getColorsMap() {
         return this.dyeColorMap;
     }
 

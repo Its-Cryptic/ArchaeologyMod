@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 public class StampBlockEntity extends BlockEntity {
-    private DyeColor color = DyeColor.WHITE;
+    private Integer color = 0;
     private Item sherdItem = Items.ANGLER_POTTERY_SHERD;
     private boolean luminous;
 
@@ -25,7 +25,7 @@ public class StampBlockEntity extends BlockEntity {
     @Override
     public void loadAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
         super.loadAdditional(tag, registries);
-        this.color = DyeColor.byId(tag.getInt("color"));
+        this.color = tag.getInt("color");
         this.luminous = tag.getBoolean("luminous");
         this.sherdItem = BuiltInRegistries.ITEM.get(ResourceLocation.parse(tag.getString("sherd_item")));
     }
@@ -33,7 +33,7 @@ public class StampBlockEntity extends BlockEntity {
     @Override
     public void saveAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
         super.saveAdditional(tag, registries);
-        tag.putInt("color", this.color.getId());
+        tag.putInt("color", this.color);
         tag.putBoolean("luminous", this.luminous);
         tag.putString("sherd_item", BuiltInRegistries.ITEM.getKey(this.sherdItem).toString());
     }
@@ -58,7 +58,7 @@ public class StampBlockEntity extends BlockEntity {
         }
     }
 
-    public void setColor(DyeColor color) {
+    public void setColor(int color) {
         this.color = color;
         this.markUpdated();
     }
@@ -68,10 +68,7 @@ public class StampBlockEntity extends BlockEntity {
         this.markUpdated();
     }
 
-    public DyeColor getColor() {
-        if (this.color == null) {
-            return DyeColor.WHITE;
-        }
+    public int getColor() {
         return this.color;
     }
 

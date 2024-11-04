@@ -1,6 +1,7 @@
 package dev.cryptics.unearth.common.blocks;
 
 import dev.cryptics.unearth.common.blocks.entity.StampBlockEntity;
+import dev.cryptics.unearth.compat.PastelCompat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -29,6 +30,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 public class StampBlock extends Block implements EntityBlock {
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.values());
 
@@ -44,8 +47,8 @@ public class StampBlock extends Block implements EntityBlock {
     protected ItemInteractionResult useItemOn(ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
         if (stack.getItem() instanceof DyeItem dyeItem) {
             if (level.getBlockEntity(pos) instanceof StampBlockEntity stamp) {
-                if (stamp.getColor().equals(dyeItem.getDyeColor())) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-                stamp.setColor(dyeItem.getDyeColor());
+                if (stamp.getColor() == dyeItem.getDyeColor().getTextColor()) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                stamp.setColor(dyeItem.getDyeColor().getTextColor());
                 if (!player.isCreative()) stack.setCount(stack.getCount() - 1);
                 player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
                 level.gameEvent(GameEvent.BLOCK_CHANGE, stamp.getBlockPos(), GameEvent.Context.of(player, stamp.getBlockState()));
@@ -53,6 +56,9 @@ public class StampBlock extends Block implements EntityBlock {
                 return ItemInteractionResult.SUCCESS;
             }
         }
+        Optional<ItemInteractionResult> result = PastelCompat.setStampPastelColor(hitResult, state, (StampBlockEntity) level.getBlockEntity(pos), player, stack, level, pos);
+        if (result.isPresent()) return result.get();
+
         if (stack.getItem() instanceof GlowInkSacItem) {
             if (level.getBlockEntity(pos) instanceof StampBlockEntity stamp) {
                 if (stamp.isLuminous()) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;

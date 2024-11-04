@@ -2,6 +2,7 @@ package dev.cryptics.unearth;
 
 import dev.cryptics.unearth.client.render.blockentity.StampBlockEntityRenderer;
 import dev.cryptics.unearth.client.screen.StampKitScreen;
+import dev.cryptics.unearth.compat.PastelCompat;
 import dev.cryptics.unearth.config.*;
 import dev.cryptics.unearth.registry.client.UnearthPostProcessors;
 import dev.cryptics.unearth.registry.common.*;
@@ -64,6 +65,8 @@ public class Unearth {
         modEventBus.addListener(this::addCreative);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC);
+
+        PastelCompat.init();
     }
 
 

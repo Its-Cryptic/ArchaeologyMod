@@ -12,10 +12,13 @@ public class Color {
     }
 
     public static Color of(DyeColor dyeColor) {
-        int textColor = dyeColor.getTextColor();
-        int r = (textColor >> 16) & 0xFF;
-        int g = (textColor >> 8) & 0xFF;
-        int b = textColor & 0xFF;
+        return of(dyeColor.getTextColor());
+    }
+
+    public static Color of(int packedColor) {
+        int r = (packedColor >> 16) & 0xFF;
+        int g = (packedColor >> 8) & 0xFF;
+        int b = packedColor & 0xFF;
         return new Color(r, g, b, 255);
     }
 

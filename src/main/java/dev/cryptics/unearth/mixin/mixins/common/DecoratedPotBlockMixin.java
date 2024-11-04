@@ -1,6 +1,7 @@
 package dev.cryptics.unearth.mixin.mixins.common;
 
-import dev.cryptics.unearth.Unearth;
+import dev.cryptics.unearth.common.blocks.entity.DecoratedPotBlockUtils;
+import dev.cryptics.unearth.compat.PastelCompat;
 import dev.cryptics.unearth.mixin.ducks.IDecoratedPotBlockEntity;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -13,7 +14,6 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.GlowInkSacItem;
 import net.minecraft.world.item.ItemStack;
@@ -32,6 +32,7 @@ import org.spongepowered.asm.mixin.Unique;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.UnaryOperator;
 
 @Mixin(DecoratedPotBlock.class)
@@ -59,22 +60,12 @@ public abstract class DecoratedPotBlockMixin {
                 return ItemInteractionResult.CONSUME;
             } else {
                 if (itemStack.getItem() instanceof DyeItem dyeItem) {
-                    DyeColor dyeColor = dyeItem.getDyeColor();
-                    Direction hitDirection = hitResult.getDirection();
-                    Direction blockDirection = blockState.getValue(HORIZONTAL_FACING);
-                    if (archaeologyMod$directionFunctionMap.containsKey(hitDirection)) {
-                        IDecoratedPotBlockEntity blockEntity = (IDecoratedPotBlockEntity) (Object) decoratedpotblockentity;
-                        Direction relativeDirection = archaeologyMod$directionFunctionMap.get(blockDirection).apply(hitDirection);
-                        //if (blockEntity.getColorsMap().get(relativeDirection) == dyeColor) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-                        blockEntity.setColor(relativeDirection, dyeColor);
-
-                        if (!player.isCreative()) itemStack.setCount(itemStack.getCount() - 1);
-                        player.awardStat(Stats.ITEM_USED.get(itemStack.getItem()));
-                        level.gameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Context.of(player, blockState));
-                        level.playSound(null, blockPos, SoundEvents.DYE_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
-                        return ItemInteractionResult.SUCCESS;
-                    }
+                    int packedColor = dyeItem.getDyeColor().getTextColor();
+                    return DecoratedPotBlockUtils.setColor(packedColor, hitResult, blockState, decoratedpotblockentity, player, itemStack, level, blockPos);
                 }
+                Optional<ItemInteractionResult> result = PastelCompat.setPotPastelColor(hitResult, blockState, decoratedpotblockentity, player, itemStack, level, blockPos);
+                if (result.isPresent()) return result.get();
+
                 if (itemStack.getItem() instanceof GlowInkSacItem glowInkSacItem) {
                     Direction hitDirection = hitResult.getDirection();
                     Direction blockDirection = blockState.getValue(HORIZONTAL_FACING);

@@ -7,6 +7,7 @@ import dev.cryptics.unearth.client.screen.StampKitMenu;
 import dev.cryptics.unearth.common.container.ItemInventory;
 import dev.cryptics.unearth.common.blocks.StampBlock;
 import dev.cryptics.unearth.common.blocks.entity.StampBlockEntity;
+import dev.cryptics.unearth.compat.PastelCompat;
 import dev.cryptics.unearth.registry.common.UnearthBlocks;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
@@ -59,28 +60,24 @@ public class StampItem extends Item {
     @Override
     public InteractionResult useOn(UseOnContext context) {
         ItemContainerContents contents = context.getItemInHand().get(DataComponents.CONTAINER);
-        if (contents == null || !hasStampEquipped(context.getItemInHand())) {
-            return InteractionResult.FAIL;
-        }
-        ItemStack sherdItem = contents.getStackInSlot(23);
-
         Level level = context.getLevel();
         Block block = level.getBlockState(context.getClickedPos()).getBlock();
         Direction direction = context.getClickedFace();
         ItemStack offhandItemStack = Objects.requireNonNull(context.getPlayer()).getItemInHand(InteractionHand.OFF_HAND);
-        if (offhandItemStack.getItem() instanceof DyeItem dyeItem) {
+        if (contents == null || !hasStampEquipped(context.getItemInHand())) return InteractionResult.FAIL;
+        ItemStack sherdItem = contents.getStackInSlot(23);
 
-            ItemStack stack = context.getItemInHand();
-            boolean isSolid = block.defaultBlockState().isSolidRender(level, context.getClickedPos());
-            if (isSolid) {
-                Block sherdBlock = UnearthBlocks.STAMP_BLOCK.get();
-                BlockPos pos = context.getClickedPos().relative(direction);
-                level.setBlock(pos, sherdBlock.defaultBlockState().setValue(StampBlock.FACING, direction.getOpposite()), 3);
-                if (level.getBlockEntity(pos) instanceof StampBlockEntity blockEntity) {
-                    blockEntity.setColor(dyeItem.getDyeColor());
+        if (block.defaultBlockState().isSolidRender(level, context.getClickedPos())) {
+            Block sherdBlock = UnearthBlocks.STAMP_BLOCK.get();
+            BlockPos pos = context.getClickedPos().relative(direction);
+            level.setBlock(pos, sherdBlock.defaultBlockState().setValue(StampBlock.FACING, direction.getOpposite()), 3);
+            if (level.getBlockEntity(pos) instanceof StampBlockEntity blockEntity) {
+                if (offhandItemStack.getItem() instanceof DyeItem dyeItem) {
+                    blockEntity.setColor(dyeItem.getDyeColor().getTextColor());
                     blockEntity.setSherdItem(sherdItem.getItem());
                     level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(context.getPlayer(), blockEntity.getBlockState()));
                 }
+                PastelCompat.setStampPastelColor(offhandItemStack.getItem(), sherdItem.getItem(), blockEntity, context.getPlayer(), level, pos);
             }
         }
 
