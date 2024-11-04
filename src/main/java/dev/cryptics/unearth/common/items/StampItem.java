@@ -16,6 +16,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -44,7 +45,6 @@ public class StampItem extends Item {
     private static final Properties properties = new Properties()
             .rarity(Rarity.UNCOMMON)
             .component(DataComponents.CONTAINER, ItemContainerContents.EMPTY)
-            .component(DataComponents.CUSTOM_MODEL_DATA, CustomModelData.DEFAULT)
             .stacksTo(1);
 
     public StampItem() {
@@ -71,12 +71,6 @@ public class StampItem extends Item {
         if (offhandItemStack.getItem() instanceof DyeItem dyeItem) {
 
             ItemStack stack = context.getItemInHand();
-            CustomModelData data = stack.get(DataComponents.CUSTOM_MODEL_DATA);
-            if (data != null) {
-                int val = data.value();
-                int newVal = val == 1 ? 0 : 1;
-                stack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(newVal));
-            }
             boolean isSolid = block.defaultBlockState().isSolidRender(level, context.getClickedPos());
             if (isSolid) {
                 Block sherdBlock = UnearthBlocks.STAMP_BLOCK.get();
@@ -95,7 +89,7 @@ public class StampItem extends Item {
 
     @NotNull
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, @NotNull Player player, @NotNull InteractionHand usedHand) {
+    public InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand usedHand) {
         ItemStack stampItem = player.getItemInHand(usedHand);
         if(player.isShiftKeyDown()){
             openMenu(player, level, stampItem);
@@ -128,18 +122,9 @@ public class StampItem extends Item {
 
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.literal("Shift + Right Click to open menu").withStyle(ChatFormatting.LIGHT_PURPLE));
-        tooltipComponents.add(Component.literal("Equipped Stamp: " + (hasStampEquipped(stack) ? getEquippedStamp(stack) : "None")));
-        if (Screen.hasShiftDown()) {
-            tooltipComponents.add(Component.literal("Shift is down"));
-            if (stack.get(DataComponents.CUSTOM_DATA) != null) {
-                tooltipComponents.add(Component.literal("Data: " + stack.get(DataComponents.CUSTOM_DATA)));
-            }
-            CustomModelData data = stack.get(DataComponents.CUSTOM_MODEL_DATA);
-            if (data != null) {
-                tooltipComponents.add(Component.literal("Model Data: " + stack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(1))));
-            }
-        }
+        tooltipComponents.add(Component.literal("Allows you to stamp blocks with a design, hold a dye in your offhand to color the stamp"));
+        tooltipComponents.add(Component.literal("Shift + Right Click to inventory").withStyle(ChatFormatting.LIGHT_PURPLE));
+        tooltipComponents.add(Component.literal("Equipped Stamp: ").withStyle(ChatFormatting.GRAY).append(hasStampEquipped(stack) ? ( (MutableComponent) getEquippedStamp(stack).getHoverName()).withStyle(ChatFormatting.GOLD) : Component.literal("None").withStyle(ChatFormatting.GOLD)));
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }
 
@@ -159,8 +144,8 @@ public class StampItem extends Item {
             BREWER_POTTERY_SHERD,
             BURN_POTTERY_SHERD,
             DANGER_POTTERY_SHERD,
-            EXPLORER_POTTERY_SHERD,
             FLOW_POTTERY_SHERD,
+            EXPLORER_POTTERY_SHERD,
             FRIEND_POTTERY_SHERD,
             GUSTER_POTTERY_SHERD,
             HEART_POTTERY_SHERD,
