@@ -8,6 +8,7 @@ import dev.cryptics.unearth.common.container.ItemInventory;
 import dev.cryptics.unearth.common.blocks.StampBlock;
 import dev.cryptics.unearth.common.blocks.entity.StampBlockEntity;
 import dev.cryptics.unearth.registry.common.UnearthBlocks;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -58,17 +59,11 @@ public class StampItem extends Item {
     @Override
     public InteractionResult useOn(UseOnContext context) {
         ItemContainerContents contents = context.getItemInHand().get(DataComponents.CONTAINER);
-        if (contents == null) {
+        if (contents == null || !hasStampEquipped(context.getItemInHand())) {
             return InteractionResult.FAIL;
         }
-
         ItemStack sherdItem = contents.getStackInSlot(23);
-        if (sherdItem.isEmpty()) {
-            return InteractionResult.FAIL;
-        }
-        if (!ALL_SHERDS.contains(sherdItem.getItem())) {
-            return InteractionResult.FAIL;
-        }
+
         Level level = context.getLevel();
         Block block = level.getBlockState(context.getClickedPos()).getBlock();
         Direction direction = context.getClickedFace();
@@ -133,6 +128,8 @@ public class StampItem extends Item {
 
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag tooltipFlag) {
+        tooltipComponents.add(Component.literal("Shift + Right Click to open menu").withStyle(ChatFormatting.LIGHT_PURPLE));
+        tooltipComponents.add(Component.literal("Equipped Stamp: " + (hasStampEquipped(stack) ? getEquippedStamp(stack) : "None")));
         if (Screen.hasShiftDown()) {
             tooltipComponents.add(Component.literal("Shift is down"));
             if (stack.get(DataComponents.CUSTOM_DATA) != null) {
@@ -144,6 +141,14 @@ public class StampItem extends Item {
             }
         }
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+    }
+
+    public static boolean hasStampEquipped(ItemStack stack) {
+        return stack.get(DataComponents.CONTAINER).getSlots() == StampKitMenu.CONTAINER_SIZE;
+    }
+
+    public static ItemStack getEquippedStamp(ItemStack stack) {
+        return stack.get(DataComponents.CONTAINER).getStackInSlot(StampKitMenu.CONTAINER_SIZE - 1);
     }
 
     public static final List<Item> ALL_SHERDS = List.of(

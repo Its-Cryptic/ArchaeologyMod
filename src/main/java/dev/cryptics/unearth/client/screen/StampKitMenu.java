@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class StampKitMenu extends AbstractContainerMenu {
-    private static final int CONTAINER_SIZE = 24;
+    public static final int CONTAINER_SIZE = 24;
     private final Container container;
 
     public StampKitMenu(int containerId, Inventory playerInventory) {
