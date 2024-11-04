@@ -1,6 +1,6 @@
 package dev.cryptics.unearth.client.screen;
 
-import dev.cryptics.unearth.common.container.ItemInventorySlot;
+import dev.cryptics.unearth.common.container.StampKitInventorySlot;
 import dev.cryptics.unearth.registry.common.UnearthMenuTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -29,15 +29,15 @@ public class StampKitMenu extends AbstractContainerMenu {
         // Container Slots
         for (int i = 0; i < height; ++i) {
             for (int j = 0; j < width; ++j) {
-                this.addSlot(new ItemInventorySlot(container, j + i * width, 8 + j * 18, 18 + i * 18));
+                this.addSlot(new StampKitInventorySlot(container, j + i * width, 8 + j * 18, 18 + i * 18));
             }
         }
-        // Add 5 more slots right below the first 18 slots, this time centered
+        // Add 5 more slots right below the first 18 slots
         for (int i = 0; i < 5; ++i) {
-            this.addSlot(new ItemInventorySlot(container, i + 18, 26 + i * 18 + 18, 18 + 2 * 18));
+            this.addSlot(new StampKitInventorySlot(container, i + 18, 26 + i * 18 + 18, 18 + 2 * 18));
         }
-        // Add 1 more slot right below the 5 slots, this time centered
-        this.addSlot(new ItemInventorySlot(container, 23, 26 + 2 * 18 + 18, 18 + 4 * 18));
+        // Add 1 more slot right below the 5 slots
+        this.addSlot(new StampKitInventorySlot(container, 23, 26 + 2 * 18 + 18, 18 + 4 * 18));
 
 
         // Player Inventory Slots
