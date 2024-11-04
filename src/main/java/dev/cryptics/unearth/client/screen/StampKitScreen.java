@@ -38,4 +38,13 @@ public class StampKitScreen extends AbstractContainerScreen<StampKitMenu> {
         int j = (this.height - this.imageHeight) / 2;
         gfx.blit(CONTAINER_TEXTURE, i, j, 0, 0, this.imageWidth, this.imageHeight);
     }
+
+    @Override
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, packColor(135, 87, 47), false);
+    }
+
+    private int packColor(int r, int g, int b) {
+        return (r << 16) | (g << 8) | b;
+    }
 }
