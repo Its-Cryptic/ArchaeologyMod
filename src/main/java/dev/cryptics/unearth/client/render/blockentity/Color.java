@@ -3,7 +3,7 @@ package dev.cryptics.unearth.client.render.blockentity;
 import net.minecraft.world.item.DyeColor;
 
 public class Color {
-    public int r,g,b,a;
+    public int packed,r,g,b,a;
     public Color(int r, int g, int b, int a) {
         this.r = r;
         this.g = g;
@@ -19,7 +19,9 @@ public class Color {
         int r = (packedColor >> 16) & 0xFF;
         int g = (packedColor >> 8) & 0xFF;
         int b = packedColor & 0xFF;
-        return new Color(r, g, b, 255);
+        Color color = new Color(r, g, b, 255);
+        color.packed = packedColor;
+        return color;
     }
 
     public int r() {

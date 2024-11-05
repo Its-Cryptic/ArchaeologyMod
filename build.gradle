@@ -152,14 +152,8 @@ dependencies {
     // Example project dependency using a sister or child project:
     // implementation project(":myproject")
 
-    implementation "curse.maven:ftb-library-forge-404465:5754910"
-    implementation "curse.maven:architectury-api-419699:5786327"
-
-    compileOnly "top.theillusivec4.curios:curios-neoforge:9.0.9+1.21:api"
-    runtimeOnly "top.theillusivec4.curios:curios-neoforge:9.0.9+1.21"
-
-    //implementation "team.lodestar.lodestone:lodestone:1.21.1-1.7.0.82"
-    implementation "team.lodestar.lodestone:lodestone:1.21.1-1.7.0.71"
+    runtimeOnly "curse.maven:ftb-library-forge-404465:5754910"
+    runtimeOnly "curse.maven:architectury-api-419699:5786327"
 
     implementation "maven.modrinth:past-el-palettes:1.0.1"
     implementation "thedarkcolour:kotlinforforge-neoforge:5.5.0"

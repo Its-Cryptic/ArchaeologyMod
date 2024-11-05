@@ -2,12 +2,14 @@ package dev.cryptics.unearth.registry.client;
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import dev.cryptics.unearth.Unearth;
+import dev.cryptics.unearth.client.shader.ShaderHolder;
+import net.minecraft.server.packs.resources.ResourceProvider;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
-import team.lodestar.lodestone.registry.client.LodestoneShaders;
-import team.lodestar.lodestone.systems.rendering.shader.ShaderHolder;
+
+import java.io.IOException;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = Unearth.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class UnearthShaderRegistry {
@@ -16,7 +18,17 @@ public class UnearthShaderRegistry {
 
     @SubscribeEvent
     public static void registerShaders(RegisterShadersEvent event) {
-        LodestoneShaders.registerShader(event, STAMP);
+        registerShader(event, STAMP);
+    }
+
+    public static void registerShader(RegisterShadersEvent event, ShaderHolder shaderHolder) {
+        try {
+            ResourceProvider provider = event.getResourceProvider();
+            event.registerShader(shaderHolder.createInstance(provider), shaderHolder::setShaderInstance);
+        } catch (IOException e) {
+            Unearth.LOGGER.error("Error registering shader", e);
+            e.printStackTrace();
+        }
     }
 
 

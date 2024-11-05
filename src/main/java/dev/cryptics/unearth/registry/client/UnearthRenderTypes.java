@@ -1,16 +1,19 @@
 package dev.cryptics.unearth.registry.client;
 
-import team.lodestar.lodestone.registry.client.LodestoneRenderTypes;
-import team.lodestar.lodestone.systems.rendering.rendeertype.RenderTypeProvider;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import dev.cryptics.unearth.Unearth;
+import dev.cryptics.unearth.client.render.rendertype.RenderTypeProvider;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.RenderStateShard;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.resources.ResourceLocation;
 
 import static com.mojang.blaze3d.vertex.DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP;
 import static com.mojang.blaze3d.vertex.VertexFormat.Mode.QUADS;
 
-public class UnearthRenderTypes extends LodestoneRenderTypes {
+public class UnearthRenderTypes extends RenderType {
 
-    public UnearthRenderTypes(String p_110161_, Runnable p_110162_, Runnable p_110163_) {
-        super(p_110161_, p_110162_, p_110163_);
-    }
 
 //    public static final RenderType STAMP = create("my_block_entity", DefaultVertexFormat.POSITION_TEX_COLOR, VertexFormat.Mode.QUADS, 2097152, false, true,
 //            CompositeState.builder()
@@ -19,11 +22,25 @@ public class UnearthRenderTypes extends LodestoneRenderTypes {
 //    );
 
     public static final RenderTypeProvider STAMP = new RenderTypeProvider((token) ->
-            createGenericRenderType("stamp", POSITION_COLOR_TEX_LIGHTMAP, QUADS, builder()
-                    .setShaderState(UnearthShaderRegistry.STAMP)
-                    //.setTransparencyState(StateShards.TRANSLUCENT_TRANSPARENCY)
-                    //.setLightmapState(LIGHTMAP)
-                    //.setCullState(CULL)
-                    .setTextureState(token.get())));
+            create("stamp", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, QUADS, 256, false, true,
+                    CompositeState.builder()
+                            .setShaderState(UnearthShaderRegistry.STAMP.getShard())
+                            .setTextureState(token.get())
+                            .setLightmapState(LIGHTMAP)
+                            .createCompositeState(true)
+            )
+    );
 
+    public static final RenderType STAMP2 = create("stamp2", POSITION_COLOR_TEX_LIGHTMAP, QUADS, 256, false, true,
+            CompositeState.builder()
+                    //.setShaderState(new ShaderStateShard(GameRenderer::getPositionColorTexLightmapShader))
+                    .setShaderState(new ShaderStateShard(UnearthShaderRegistry.STAMP.getInstance()))
+                    .setTextureState(new RenderStateShard.TextureStateShard(Unearth.id("textures/stamps/angler.png"), false, false))
+                    .setLightmapState(LIGHTMAP)
+                    .createCompositeState(true)
+    );
+
+    public UnearthRenderTypes(String name, VertexFormat format, VertexFormat.Mode mode, int bufferSize, boolean affectsCrumbling, boolean sortOnUpload, Runnable setupState, Runnable clearState) {
+        super(name, format, mode, bufferSize, affectsCrumbling, sortOnUpload, setupState, clearState);
+    }
 }

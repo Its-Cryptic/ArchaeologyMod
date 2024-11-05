@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import dev.cryptics.unearth.Unearth;
+import dev.cryptics.unearth.client.render.rendertype.RenderTypeToken;
 import dev.cryptics.unearth.mixin.ducks.IDecoratedPotBlockEntity;
 import dev.cryptics.unearth.registry.client.UnearthRenderTypes;
 import net.minecraft.Util;
@@ -16,7 +17,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import team.lodestar.lodestone.systems.rendering.rendeertype.RenderTypeToken;
 
 import java.util.HashMap;
 import java.util.Map;

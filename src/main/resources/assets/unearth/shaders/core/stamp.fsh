@@ -52,7 +52,6 @@ void main() {
     fragColor = color * ColorModulator;
     float distanceFromCenter = distanceFromCenter(pixelize(texCoord0, 1.0/16.0));
     fragColor.rgb *= vec3(1.0-distanceFromCenter);
-    //fragColor.rgb = vec3(1.0-distanceFromCenter);
 
    if (fragColor.a < 0.5) discard;
 }

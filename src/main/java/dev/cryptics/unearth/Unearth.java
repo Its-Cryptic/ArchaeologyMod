@@ -4,7 +4,6 @@ import dev.cryptics.unearth.client.render.blockentity.StampBlockEntityRenderer;
 import dev.cryptics.unearth.client.screen.StampKitScreen;
 import dev.cryptics.unearth.compat.PastelCompat;
 import dev.cryptics.unearth.config.*;
-import dev.cryptics.unearth.registry.client.UnearthPostProcessors;
 import dev.cryptics.unearth.registry.common.*;
 import dev.cryptics.unearth.registry.common.UnearthBlockEntitites;
 import net.minecraft.resources.ResourceLocation;
@@ -80,7 +79,6 @@ public class Unearth {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-            UnearthPostProcessors.init();
         }
 
         @SubscribeEvent

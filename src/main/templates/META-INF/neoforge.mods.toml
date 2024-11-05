@@ -86,14 +86,6 @@ config="${mod_id}.mixins.json"
     side="BOTH"
 
 [[dependencies.${mod_id}]]
-    modId="lodestone"
-    type="required"
-    # This version range declares a minimum of the current minecraft version up to but not including the next major version
-    versionRange="[1.7.0,)"
-    ordering="NONE"
-    side="BOTH"
-
-[[dependencies.${mod_id}]]
 modId="past_el_palettes"
 type="optional"
 # This version range declares a minimum of the current minecraft version up to but not including the next major version

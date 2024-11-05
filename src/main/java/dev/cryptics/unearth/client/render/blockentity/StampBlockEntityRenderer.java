@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import dev.cryptics.unearth.Unearth;
+import dev.cryptics.unearth.client.render.rendertype.RenderTypeToken;
 import dev.cryptics.unearth.common.blocks.StampBlock;
 import dev.cryptics.unearth.common.blocks.entity.StampBlockEntity;
 import dev.cryptics.unearth.registry.client.UnearthRenderTypes;
@@ -20,7 +21,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
-import team.lodestar.lodestone.systems.rendering.rendeertype.RenderTypeToken;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -63,7 +63,6 @@ public class StampBlockEntityRenderer implements BlockEntityRenderer<StampBlockE
         Item sherdItem = stampBlockEntity.getSherdItem();
 
         ResourceLocation texture = CustomDecoratedPotRenderer.getTexture(sherdItem);
-        //Unearth.LOGGER.info(getTexture(Items.ANGLER_POTTERY_SHERD).toString());
         renderStamp(direction, color, texture, poseStack, multiBufferSource, luminous ? LightTexture.FULL_BRIGHT : packedLight);
     }
 
