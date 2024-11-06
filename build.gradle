@@ -155,8 +155,8 @@ dependencies {
     runtimeOnly "curse.maven:ftb-library-forge-404465:5754910"
     runtimeOnly "curse.maven:architectury-api-419699:5786327"
 
-    implementation "maven.modrinth:past-el-palettes:1.0.1"
-    implementation "thedarkcolour:kotlinforforge-neoforge:5.5.0"
+    compileOnly "maven.modrinth:past-el-palettes:1.0.1"
+    compileOnly "thedarkcolour:kotlinforforge-neoforge:5.5.0"
 
 
     // For more info:

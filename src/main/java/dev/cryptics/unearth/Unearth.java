@@ -34,45 +34,19 @@ public class Unearth {
     public static final String MODID = "unearth";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> UNEARTH_TAB = CREATIVE_MODE_TABS.register("unearth", () -> CreativeModeTab.builder()
-            .title(Component.translatable("itemGroup.unearth")) //The language key for the title of your CreativeModeTab
-            .withTabsBefore(CreativeModeTabs.COMBAT)
-            .icon(() -> UnearthItems.STAMP.get().getDefaultInstance())
-            .displayItems((parameters, output) -> {
-                output.accept(UnearthItems.STAMP.get());
-                output.accept(UnearthItems.CONVERSATION_RANGE_MUSIC_DISC.get());
-            }).build());
-
-    // The constructor for the mod class is the first code that is run when your mod is loaded.
-    // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
     public Unearth(IEventBus modEventBus, ModContainer modContainer) {
-        //modEventBus.addListener(this::commonSetup);
-
         UnearthItems.init(modEventBus);
         UnearthBlocks.init(modEventBus);
         UnearthBlockEntitites.init(modEventBus);
+        UnearthCreativeModeTabs.init(modEventBus);
         UnearthSounds.init(modEventBus);
         UnearthMenuTypes.init(modEventBus);
-        CREATIVE_MODE_TABS.register(modEventBus);
 
         UnearthDataComponentTypes.init(modEventBus);
-
-
-        //NeoForge.EVENT_BUS.register(this);
-
-        modEventBus.addListener(this::addCreative);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC);
 
         PastelCompat.init();
-    }
-
-
-    private void addCreative(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
-
-        }
     }
 
     @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)

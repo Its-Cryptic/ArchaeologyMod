@@ -14,7 +14,7 @@ public class UnearthBlockEntitites {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES =
             DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, MOD_ID);
 
-    public static final Supplier<BlockEntityType<StampBlockEntity>> STAMP_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("my_block_entity",
+    public static final Supplier<BlockEntityType<StampBlockEntity>> STAMP_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("stamp_block_entity",
             () -> BlockEntityType.Builder.of(StampBlockEntity::new, UnearthBlocks.STAMP_BLOCK.get())
                     .build(null)
     );

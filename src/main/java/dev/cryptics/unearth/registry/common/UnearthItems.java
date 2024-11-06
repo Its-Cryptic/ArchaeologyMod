@@ -5,8 +5,11 @@ import dev.cryptics.unearth.common.items.StampItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+
+import java.util.function.Consumer;
 
 public class UnearthItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Unearth.MODID);
@@ -20,6 +23,10 @@ public class UnearthItems {
                     .rarity(Rarity.RARE)
             )
     );
+
+    public static void forEachItem(Consumer<DeferredHolder<Item, ? extends Item>> consumer) {
+        ITEMS.getEntries().forEach(consumer);
+    }
 
     public static void init(IEventBus modEventBus) {
         ITEMS.register(modEventBus);

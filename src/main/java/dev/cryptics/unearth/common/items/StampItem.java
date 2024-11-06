@@ -1,8 +1,5 @@
 package dev.cryptics.unearth.common.items;
 
-import com.google.common.collect.ImmutableMap;
-import dev.cryptics.unearth.Unearth;
-import dev.cryptics.unearth.client.render.blockentity.CustomDecoratedPotRenderer;
 import dev.cryptics.unearth.client.screen.StampKitMenu;
 import dev.cryptics.unearth.common.container.ItemInventory;
 import dev.cryptics.unearth.common.blocks.StampBlock;
@@ -10,15 +7,12 @@ import dev.cryptics.unearth.common.blocks.entity.StampBlockEntity;
 import dev.cryptics.unearth.compat.PastelCompat;
 import dev.cryptics.unearth.registry.common.UnearthBlocks;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.*;
@@ -26,18 +20,14 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.component.CustomData;
-import net.minecraft.world.item.component.CustomModelData;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import static net.minecraft.world.item.Items.*;
@@ -52,11 +42,6 @@ public class StampItem extends Item {
         super(properties);
     }
 
-    /**
-     * Ignore how bad this code is, I was in a rush
-     * @param context
-     * @return
-     */
     @Override
     public InteractionResult useOn(UseOnContext context) {
         ItemContainerContents contents = context.getItemInHand().get(DataComponents.CONTAINER);
