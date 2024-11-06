@@ -1,9 +1,12 @@
 package dev.cryptics.unearth.compat;
 
 import com.mynamesraph.pastelpalettes.item.PastelDyeItem;
+import dev.cryptics.unearth.common.blocks.StampBlock;
 import dev.cryptics.unearth.common.blocks.entity.DecoratedPotBlockUtils;
 import dev.cryptics.unearth.common.blocks.entity.StampBlockEntity;
+import dev.cryptics.unearth.registry.common.UnearthBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -14,6 +17,7 @@ import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -52,12 +56,16 @@ public class PastelCompat {
         return Optional.empty();
     }
 
-    public static void setStampPastelColor(Item offhandItem, Item sherdItem, StampBlockEntity blockEntity, Player player, Level level, BlockPos pos) {
+    public static void setStampPastelColor(Item offhandItem, Item sherdItem, Direction direction, Player player, Level level, BlockPos pos) {
         if (LOADED) {
             if (offhandItem instanceof PastelDyeItem dyeItem) {
-                blockEntity.setColor(dyeItem.getDyeColor().getTextColor());
-                blockEntity.setSherdItem(sherdItem);
-                level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, blockEntity.getBlockState()));
+                Block stampBlock = UnearthBlocks.STAMP_BLOCK.get();
+                level.setBlock(pos, stampBlock.defaultBlockState().setValue(StampBlock.FACING, direction.getOpposite()), 3);
+                if (level.getBlockEntity(pos) instanceof StampBlockEntity blockEntity) {
+                    blockEntity.setColor(dyeItem.getDyeColor().getTextColor());
+                    blockEntity.setSherdItem(sherdItem);
+                    level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, blockEntity.getBlockState()));
+                }
             }
         }
     }

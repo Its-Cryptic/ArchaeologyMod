@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class ItemInventory implements Container {
     private final ItemStack stack;
-    private final NonNullList<ItemStack> items = NonNullList.withSize(27, ItemStack.EMPTY);
+    private final NonNullList<ItemStack> items = NonNullList.withSize(24, ItemStack.EMPTY);
 
     public ItemInventory(ItemStack stack) {
         this.stack = stack;

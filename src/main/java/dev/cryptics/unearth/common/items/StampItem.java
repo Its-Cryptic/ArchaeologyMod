@@ -24,6 +24,7 @@ import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -53,17 +54,20 @@ public class StampItem extends Item {
         ItemStack sherdItem = contents.getStackInSlot(23);
 
         if (block.defaultBlockState().isSolidRender(level, context.getClickedPos())) {
-            Block sherdBlock = UnearthBlocks.STAMP_BLOCK.get();
+            Block stampBlock = UnearthBlocks.STAMP_BLOCK.get();
             BlockPos pos = context.getClickedPos().relative(direction);
-            level.setBlock(pos, sherdBlock.defaultBlockState().setValue(StampBlock.FACING, direction.getOpposite()), 3);
-            if (level.getBlockEntity(pos) instanceof StampBlockEntity blockEntity) {
-                if (offhandItemStack.getItem() instanceof DyeItem dyeItem) {
+
+            if (offhandItemStack.getItem() instanceof DyeItem dyeItem) {
+                BlockState blockState = stampBlock.defaultBlockState().setValue(StampBlock.FACING, direction.getOpposite());
+                level.setBlock(pos, blockState, 3);
+                if (level.getBlockEntity(pos) instanceof StampBlockEntity blockEntity) {
                     blockEntity.setColor(dyeItem.getDyeColor().getTextColor());
                     blockEntity.setSherdItem(sherdItem.getItem());
                     level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(context.getPlayer(), blockEntity.getBlockState()));
+                    level.sendBlockUpdated(pos, blockState, blockState, Block.UPDATE_ALL_IMMEDIATE);
                 }
-                PastelCompat.setStampPastelColor(offhandItemStack.getItem(), sherdItem.getItem(), blockEntity, context.getPlayer(), level, pos);
             }
+            PastelCompat.setStampPastelColor(offhandItemStack.getItem(), sherdItem.getItem(), direction, context.getPlayer(), level, pos);
         }
 
         return InteractionResult.SUCCESS;
