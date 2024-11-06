@@ -1,6 +1,7 @@
 {
-  "itemGroup.unearth": "Unearth Items",
+  "itemGroup.unearth": "Unearth",
   "item.unearth.stamp_kit": "Stamp Kit",
+  "block.unearth.stamp": "Stamp",
   "item.unearth.conversation_range_music_disc": "Music Disc",
   "item.unearth.conversation_range_music_disc.desc": "Bandit - Conversation Range"
 }

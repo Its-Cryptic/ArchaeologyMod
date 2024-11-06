@@ -13,7 +13,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class UnearthBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Unearth.MODID);
 
-    public static final DeferredBlock<StampBlock> STAMP_BLOCK = BLOCKS.register("angler_stamp", () ->
+    public static final DeferredBlock<StampBlock> STAMP_BLOCK = BLOCKS.register("stamp", () ->
             new StampBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.CLAY)
                     .noCollission()
