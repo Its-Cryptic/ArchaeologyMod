@@ -47,7 +47,6 @@ public class StampBlockEntity extends BlockEntity {
     public CompoundTag getUpdateTag(@NotNull HolderLookup.Provider registries) {
         CompoundTag tag = new CompoundTag();
         saveAdditional(tag, registries);
-        Unearth.LOGGER.info("StampBlockEntity.getUpdateTag: " + tag);
         return tag;
     }
 

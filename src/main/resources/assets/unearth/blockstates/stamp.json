@@ -3,14 +3,14 @@
         {
             "when": { "facing": "north" },
             "apply": {
-                "model": "unearth:block/angler_stamp",
+                "model": "unearth:block/stamp",
                 "uvlock": true
             }
         },
         {
             "when": { "facing": "east" },
             "apply": {
-                "model": "unearth:block/angler_stamp",
+                "model": "unearth:block/stamp",
                 "y": 90,
                 "uvlock": true
             }
@@ -18,7 +18,7 @@
         {
             "when": { "facing": "south" },
             "apply": {
-                "model": "unearth:block/angler_stamp",
+                "model": "unearth:block/stamp",
                 "y": 180,
                 "uvlock": true
             }
@@ -26,7 +26,7 @@
         {
             "when": { "facing": "west" },
             "apply": {
-                "model": "unearth:block/angler_stamp",
+                "model": "unearth:block/stamp",
                 "y": 270,
                 "uvlock": true
             }
@@ -34,7 +34,7 @@
         {
             "when": { "facing": "up" },
             "apply": {
-                "model": "unearth:block/angler_stamp",
+                "model": "unearth:block/stamp",
                 "x": -90,
                 "uvlock": true
             }
@@ -42,7 +42,7 @@
         {
             "when": { "facing": "down" },
             "apply": {
-                "model": "unearth:block/angler_stamp",
+                "model": "unearth:block/stamp",
                 "x": 90,
                 "uvlock": true
             }

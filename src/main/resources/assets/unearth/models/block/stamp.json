@@ -2,8 +2,7 @@
     "ambientocclusion": false,
     "render_type": "cutout",
     "textures": {
-        "particle": "block/vine",
-        "angler_stamp": "block/vine"
+        "particle": "minecraft:block/white_concrete_powder"
     },
     "elements": [
 
