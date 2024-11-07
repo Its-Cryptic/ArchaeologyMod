@@ -36,10 +36,15 @@ public class DecoratedPotBlockUtils {
         if (directionFunctionMap.containsKey(hitDirection)) {
             Direction relativeDirection = directionFunctionMap.get(blockDirection).apply(hitDirection);
             IDecoratedPotBlockEntity blockEntity = (IDecoratedPotBlockEntity) (Object) decoratedPotBlockEntity;
-            blockEntity.setColor(relativeDirection, packedColor);
+            if (blockEntity.getColorsMap().getOrDefault(relativeDirection.getOpposite(), -1) == packedColor) {
+                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            }
 
-            if (!player.isCreative()) itemStack.setCount(itemStack.getCount() - 1);
-            player.awardStat(Stats.ITEM_USED.get(itemStack.getItem()));
+            blockEntity.setColor(relativeDirection, packedColor);
+            if (!player.isCreative()) {
+                itemStack.shrink(1);
+                player.awardStat(Stats.ITEM_USED.get(itemStack.getItem()));
+            }
             level.gameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Context.of(player, blockState));
             level.playSound(null, blockPos, SoundEvents.GLOW_INK_SAC_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
             return ItemInteractionResult.SUCCESS;

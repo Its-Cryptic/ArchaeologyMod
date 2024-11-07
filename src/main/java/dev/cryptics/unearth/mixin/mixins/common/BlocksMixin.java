@@ -10,6 +10,12 @@ import org.spongepowered.asm.mixin.injection.Slice;
 
 @Mixin(Blocks.class)
 public class BlocksMixin {
+
+    /**
+     * Adds light level of 10 to a full-grown torch flower by modifying the BlockBehaviour.Properties
+     * @param original BlockBehaviour.Properties
+     * @return BlockBehaviour.Properties with light level of 10
+     */
     @ModifyExpressionValue(
             method = "<clinit>",
             at = @At(
@@ -25,6 +31,12 @@ public class BlocksMixin {
         return original.lightLevel(blocksState -> 10);
     }
 
+
+    /**
+     * Adds light level of 3 when the torch flower crop is not fully grown and 6 when it is fully grown
+     * @param original BlockBehaviour.Properties
+     * @return BlockBehaviour.Properties with light level of 3 or 6
+     */
     @ModifyExpressionValue(
             method = "<clinit>",
             at = @At(

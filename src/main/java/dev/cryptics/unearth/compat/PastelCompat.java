@@ -29,14 +29,14 @@ import java.util.Optional;
 public class PastelCompat {
     public static boolean LOADED;
 
-    public static Optional<ItemInteractionResult> setPotPastelColor(BlockHitResult hitResult, BlockState blockState, DecoratedPotBlockEntity decoratedPotBlockEntity, Player player, ItemStack itemStack, Level level, BlockPos blockPos) {
+    public static ItemInteractionResult setPotPastelColor(BlockHitResult hitResult, BlockState blockState, DecoratedPotBlockEntity decoratedPotBlockEntity, Player player, ItemStack itemStack, Level level, BlockPos blockPos) {
         if (LOADED) {
             if (itemStack.getItem() instanceof PastelDyeItem pastelDyeItem) {
                 int packedColor = pastelDyeItem.getDyeColor().getTextColor();
-                return Optional.of(DecoratedPotBlockUtils.setColor(packedColor, hitResult, blockState, decoratedPotBlockEntity, player, itemStack, level, blockPos));
+                return DecoratedPotBlockUtils.setColor(packedColor, hitResult, blockState, decoratedPotBlockEntity, player, itemStack, level, blockPos);
             }
         }
-        return Optional.empty();
+        return null;
     }
 
     public static Optional<ItemInteractionResult> setStampPastelColor(BlockHitResult hitResult, BlockState blockState, StampBlockEntity stampBlockEntity, Player player, ItemStack itemStack, Level level, BlockPos blockPos) {

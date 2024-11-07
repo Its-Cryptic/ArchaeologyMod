@@ -24,20 +24,19 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 public class CustomDecoratedPotRenderer {
+    public static void renderStamp(Direction direction, IDecoratedPotBlockEntity blockEntity, Optional<Item> pItem, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
+        if (pItem.isEmpty()) return;
+        if (pItem.get().equals(Items.BRICK)) return;
 
-    public static void renderStamp(Direction direction, IDecoratedPotBlockEntity blockEntity, Optional<Item> item, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
-        if (item.isEmpty()) return;
-        if (item.get().equals(Items.BRICK)) return;
-        //DyeColor color = blockEntity.getColorsMap().get(direction);
-        int color = blockEntity.getColorsMap().getOrDefault(direction, 0);
+        int color = blockEntity.getColorsMap().getOrDefault(direction, -1);
+        if (color == -1) return;
         packedLight = blockEntity.getLuminousMap().getOrDefault(direction, false) ? LightTexture.FULL_BRIGHT : packedLight;
-        if (color == 0) return;
-        renderStamp(direction, color, item, poseStack, multiBufferSource, packedLight);
+        renderStamp(direction, color, pItem.get(), poseStack, multiBufferSource, packedLight);
     }
 
-    public static void renderStamp(Direction direction, int packedColor, Optional<Item> item, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
+    public static void renderStamp(Direction direction, int packedColor, Item item, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
         Color color = Color.of(packedColor);
-        ResourceLocation pTexture = item.map(CustomDecoratedPotRenderer::getTexture).orElse(null);
+        ResourceLocation pTexture = getTexture(item);
         RenderTypeToken token = RenderTypeToken.createCachedToken(pTexture);
         RenderType renderType = UnearthRenderTypes.STAMP.applyAndCache(token);
         VertexConsumer vertexConsumer = multiBufferSource.getBuffer(renderType);
