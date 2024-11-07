@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import dev.cryptics.unearth.Unearth;
 import dev.cryptics.unearth.client.render.rendertype.RenderTypeToken;
+import dev.cryptics.unearth.common.blocks.entity.data.DecoratedPotColorLuminousData;
 import dev.cryptics.unearth.mixin.ducks.IDecoratedPotBlockEntity;
 import dev.cryptics.unearth.registry.client.UnearthRenderTypes;
 import net.minecraft.Util;
@@ -28,9 +29,14 @@ public class CustomDecoratedPotRenderer {
         if (pItem.isEmpty()) return;
         if (pItem.get().equals(Items.BRICK)) return;
 
-        int color = blockEntity.getColorsMap().getOrDefault(direction, -1);
-        if (color == -1) return;
-        packedLight = blockEntity.getLuminousMap().getOrDefault(direction, false) ? LightTexture.FULL_BRIGHT : packedLight;
+        DecoratedPotColorLuminousData.Entry entry = blockEntity.getColorLuminousData().get(direction.getOpposite());
+        if (!entry.isColored()) return;
+        //int color = blockEntity.getColorsMap().getOrDefault(direction, -1);
+        int color = entry.getColor();
+        //Unearth.LOGGER.info("Color: " + color);
+        //Unearth.LOGGER.info("R: " + (color >> 16 & 255) +  ", G: " + (color >> 8 & 255) + ", B: " + (color & 255));
+        //packedLight = blockEntity.getLuminousMap().getOrDefault(direction, false) ? LightTexture.FULL_BRIGHT : packedLight;
+        packedLight = entry.isLuminous() ? LightTexture.FULL_BRIGHT : packedLight;
         renderStamp(direction, color, pItem.get(), poseStack, multiBufferSource, packedLight);
     }
 

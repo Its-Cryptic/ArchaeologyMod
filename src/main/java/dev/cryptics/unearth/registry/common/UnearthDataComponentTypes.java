@@ -1,6 +1,6 @@
 package dev.cryptics.unearth.registry.common;
 
-import dev.cryptics.unearth.common.blocks.entity.data.PotColors;
+import dev.cryptics.unearth.common.blocks.entity.data.DecoratedPotColorLuminousData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -19,8 +19,8 @@ public class UnearthDataComponentTypes {
             builder.persistent(BlockPos.CODEC).networkSynchronized(BlockPos.STREAM_CODEC)
     );
 
-    public static final Supplier<DataComponentType<PotColors>> POT_COLORS = register("pot_colors", builder ->
-            builder.persistent(PotColors.CODEC).networkSynchronized(PotColors.STREAM_CODEC)
+    public static final Supplier<DataComponentType<DecoratedPotColorLuminousData>> POT_COLORS = register("pot_colors", builder ->
+            builder.persistent(DecoratedPotColorLuminousData.CODEC).networkSynchronized(DecoratedPotColorLuminousData.STREAM_CODEC)
     );
 
     private static <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String name, UnaryOperator<DataComponentType.Builder<T>> builderOperator) {

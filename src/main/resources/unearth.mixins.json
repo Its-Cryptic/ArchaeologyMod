@@ -6,7 +6,8 @@
     "mixins": [
         "common.BlocksMixin",
         "common.DecoratedPotBlockEntityMixin",
-        "common.DecoratedPotBlockMixin"
+        "common.DecoratedPotBlockMixin",
+        "common.ItemsMixin"
     ],
     "client": [
         "client.DecoratedPotRendererMixin"

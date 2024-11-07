@@ -61,8 +61,10 @@ public abstract class DecoratedPotBlockMixin {
         if (itemStack.getItem() instanceof DyeItem dyeItem) {
             int packedColor = dyeItem.getDyeColor().getTextColor();
             ItemInteractionResult result = DecoratedPotBlockUtils.setColor(packedColor, hitResult, blockState, decoratedpotblockentity, player, itemStack, level, blockPos);
-            cir.setReturnValue(result);
-            return;
+            if (result != null) {
+                cir.setReturnValue(result);
+                return;
+            }
         }
 
         ItemInteractionResult result = PastelCompat.setPotPastelColor(hitResult, blockState, decoratedpotblockentity, player, itemStack, level, blockPos);
@@ -78,7 +80,7 @@ public abstract class DecoratedPotBlockMixin {
                 IDecoratedPotBlockEntity blockEntity = (IDecoratedPotBlockEntity) (Object) decoratedpotblockentity;
                 Direction relativeDirection = archaeologyMod$directionFunctionMap.get(blockDirection).apply(hitDirection);
 
-                if (blockEntity.getLuminousMap().getOrDefault(relativeDirection.getOpposite(), false)) {
+                if (blockEntity.getColorLuminousData().get(relativeDirection).isLuminous()) {
                     cir.setReturnValue(ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION);
                     return;
                 }

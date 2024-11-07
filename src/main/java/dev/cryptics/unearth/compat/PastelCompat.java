@@ -23,13 +23,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.fml.ModList;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
 public class PastelCompat {
     public static boolean LOADED;
 
-    public static ItemInteractionResult setPotPastelColor(BlockHitResult hitResult, BlockState blockState, DecoratedPotBlockEntity decoratedPotBlockEntity, Player player, ItemStack itemStack, Level level, BlockPos blockPos) {
+    public static @Nullable ItemInteractionResult setPotPastelColor(BlockHitResult hitResult, BlockState blockState, DecoratedPotBlockEntity decoratedPotBlockEntity, Player player, ItemStack itemStack, Level level, BlockPos blockPos) {
         if (LOADED) {
             if (itemStack.getItem() instanceof PastelDyeItem pastelDyeItem) {
                 int packedColor = pastelDyeItem.getDyeColor().getTextColor();
